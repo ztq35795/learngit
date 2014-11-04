@@ -16,12 +16,16 @@ def strtran(inputstr):
         stra+='-'
     return stra
 
-def lsa():
+def lsl(a):
     import os
     import pwd
     import grp
     import time
-    filename=glob.glob("*")
+    import glob
+    if(a==0):
+        filename=glob.glob("*")
+    else:
+        filename=os.listdir()
     filesize=[]
     fileowner=[]
 
@@ -50,16 +54,29 @@ def lsa():
             fileowner[i] += str1
         print("%s %s %s %s %6s %2d月 %s %s"%(fileowner[i],link,user,group,filesize[i],mon,time1,name))
         i=i+1
-import os
-import glob
+def lsa(a):
+    import glob
+    filename=glob.glob("*")
+    for name in filename:
+        if(a==0):
+            if(name[0]=='.'):
+                pass
+            else:
+                print("%s "%(name), end=' ')
+        else:
+            print("%s "%(name),end=' ')
 import sys
 
 commend=sys.argv
-filename=glob.glob("*")
-filesize=[]
-fileowner=[]
-lsa()
+if(len(commend)>=2):
+    if(commend[1]=="-al"):
+        lsl(1)
+    if(commend[1]=="-l"):
+        lsl(0)
+    if(commend[1]=="-a"):
+        lsa(1)
+else:
+        lsa(0)
 
-i=1
 print()
 
