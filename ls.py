@@ -14,23 +14,24 @@ def strtran(inputstr):
         stra+='x'
     else:
         stra+='-'
-    print(stra)
     return stra
 
-def lsa(path):
+def lsa():
     import os
     import pwd
     import grp
+    import time
     filename=glob.glob("*")
     filesize=[]
     fileowner=[]
-    link
-    user
-    group
+
     i=0
+
     for name in filename:
         link=os.stat(name).st_nlink
-        user=pwd.getpwuid(name).pw_name
+        user=pwd.getpwuid(os.stat(name).st_uid).pw_name
+        group=grp.getgrgid(os.stat(name).st_gid).gr_name
+        time=os.stat()
         filesize.append(os.stat(name).st_size)
         fileown=oct(os.stat(name).st_mode)[-3:]
         if(os.path.isfile(name)):
@@ -42,7 +43,8 @@ def lsa(path):
         for j in range(3):
             str1=strtran(fileown[j])
             fileowner[i] += str1
-        print("%s %s"%(fileowner[i],name,link,user))
+        print("%s %s %s %s %s %s"%(fileowner[i],link,user,group,filesize[i],name))
+        i=i+1
 import os
 import glob
 import sys
@@ -51,24 +53,8 @@ commend=sys.argv
 filename=glob.glob("*")
 filesize=[]
 fileowner=[]
-i=0
-
-i=i+1
-
+lsa()
 
 i=1
-if(len(commend)>=2):
-    for i in len(commend)-1:
-        if(commend[i]=="-a"):
-            for name in filename:
-                print("%s %d" %(name,hidefilesize[i]),end=' ')
-                i=i+1
-            i=0
-        elif(commend[i]=="-l"):
-            for name in filename:
-                print("%s ")
-    else:
-        for name in filename
-            if(name)
 print()
 
