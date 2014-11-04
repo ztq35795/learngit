@@ -31,19 +31,24 @@ def lsa():
         link=os.stat(name).st_nlink
         user=pwd.getpwuid(os.stat(name).st_uid).pw_name
         group=grp.getgrgid(os.stat(name).st_gid).gr_name
-        time=os.stat()
+        mon=time.localtime(os.stat(name).st_mtime).tm_mon
+        time1=time.ctime(os.stat(name).st_mtime)[7:-8]
         filesize.append(os.stat(name).st_size)
         fileown=oct(os.stat(name).st_mode)[-3:]
         if(os.path.isfile(name)):
             fileowner.append('-')
         elif(os.path.isdir(name)):
             fileowner.append('d')
-        else:
+        elif(os.path.islink(name)):
             fileowner.append('l')
+        elif(group=='disk'):
+            fileowner.append('b')
+        else:
+            fileowner.append('c')
         for j in range(3):
             str1=strtran(fileown[j])
             fileowner[i] += str1
-        print("%s %s %s %s %s %s"%(fileowner[i],link,user,group,filesize[i],name))
+        print("%s %s %s %s %6s %2d月 %s %s"%(fileowner[i],link,user,group,filesize[i],mon,time1,name))
         i=i+1
 import os
 import glob
