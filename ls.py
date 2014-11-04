@@ -17,32 +17,43 @@ def strtran(inputstr):
     print(stra)
     return stra
 
-def lsa:
-
-
-
+def lsa(path):
+    import os
+    import pwd
+    import grp
+    filename=glob.glob("*")
+    filesize=[]
+    fileowner=[]
+    link
+    user
+    group
+    i=0
+    for name in filename:
+        link=os.stat(name).st_nlink
+        user=pwd.getpwuid(name).pw_name
+        filesize.append(os.stat(name).st_size)
+        fileown=oct(os.stat(name).st_mode)[-3:]
+        if(os.path.isfile(name)):
+            fileowner.append('-')
+        elif(os.path.isdir(name)):
+            fileowner.append('d')
+        else:
+            fileowner.append('l')
+        for j in range(3):
+            str1=strtran(fileown[j])
+            fileowner[i] += str1
+        print("%s %s"%(fileowner[i],name,link,user))
 import os
 import glob
 import sys
-
 
 commend=sys.argv
 filename=glob.glob("*")
 filesize=[]
 fileowner=[]
 i=0
-for name in filename:
-    filesize.append(os.path.getsize(name))
-    fileown=oct(os.stat(name)[0])[-3:]
-    if(os.path.isfile()):
-        fileowner.append('-')
-    if(os.path.)
-    print(fileown[0][0],fileowner[0])
-    for j in range(3):
-        str1=strtran(fileown[j])
-        fileowner[i] += str1
 
-    i=i+1
+i=i+1
 
 
 i=1
