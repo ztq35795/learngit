@@ -89,7 +89,7 @@ def lsa(a):
         filename=glob.glob("*")
     for name in filename:
         print("%s "%(name),end=' ')
-
+    print()
 import sys
 
 #commend=sys.argv
