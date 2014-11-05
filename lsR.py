@@ -1,14 +1,17 @@
 #!/usr/bin/python
-def lsR(a):
+def lsR():
+    import ls
     import glob
-    if(a==1):
-        filename=glob.glob(".*")+glob.glob("*")
-    else:
-        filename=glob.glob("*")
-
-
-
+    import os
+    filename=glob.glob(".*")+glob.glob("*")
+    ls.lsa(0)
     for name in filename:
-        print("%s "%(name),end=' ')
+        if(os.path.isdir(name)):
+            os.chdir(name)
+            print(os.getcwd())
+            lsR()
+    print()
+    os.chdir("..")
+    return
 
-
+lsR()

@@ -89,18 +89,19 @@ def lsa(a):
         filename=glob.glob("*")
     for name in filename:
         print("%s "%(name),end=' ')
+
 import sys
 
-commend=sys.argv
-if(len(commend)>=2):
-    if(commend[1]=="-al"):
-        lsl(1)
-    if(commend[1]=="-l"):
-        lsl(0)
-    if(commend[1]=="-a"):
-        lsa(1)
-else:
-        lsa(0)
-
-print()
+#commend=sys.argv
+#if(len(commend)>=2):
+#    if(commend[1]=="-al"):
+#        lsl(1)
+#    if(commend[1]=="-l"):
+#        lsl(0)
+#    if(commend[1]=="-a"):
+#        lsa(1)
+#else:
+#        lsa(0)
+#
+#print()
 
