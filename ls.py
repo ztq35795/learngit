@@ -25,7 +25,7 @@ def lsl(a):
     if(a==0):
         filename=glob.glob("*")
     else:
-        filename=os.listdir()
+        filename=glob.glob(".*")+glob.glob("*")
     filesize=[]
     fileowner=[]
 
@@ -56,15 +56,12 @@ def lsl(a):
         i=i+1
 def lsa(a):
     import glob
-    filename=glob.glob("*")
+    if(a==1):
+        filename=glob.glob(".*")+glob.glob("*")
+    else:
+        filename=glob.glob("*")
     for name in filename:
-        if(a==0):
-            if(name[0]=='.'):
-                pass
-            else:
-                print("%s "%(name), end=' ')
-        else:
-            print("%s "%(name),end=' ')
+        print("%s "%(name),end=' ')
 import sys
 
 commend=sys.argv
