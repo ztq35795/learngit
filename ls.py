@@ -28,23 +28,50 @@ def lsl(a):
         filename=glob.glob(".*")+glob.glob("*")
     filesize=[]
     fileowner=[]
-
     i=0
+    dirsize=os.stat(".").st_size/1000
+    print("总用量 %d"%dirsize)
 
+
+    Max=len("%s"%os.stat(filename[0]).st_size)
+    Max=Max
+    Maxlink=len("%s"%os.stat(filename[0]).st_nlink)
+    Maxuser=len(pwd.getpwuid(os.stat(filename[0]).st_uid).pw_name)
+    Maxgroup=len(grp.getgrgid(os.stat(filename[0]).st_gid).gr_name)
     for name in filename:
-        link=os.stat(name).st_nlink
+        filelinkl=len("%s"%os.stat(name).st_nlink)
+        filesizel=len("%s"%os.stat(name).st_size)
+
+        userl=len(pwd.getpwuid(os.stat(name).st_uid).pw_name)
+        groupl=len(grp.getgrgid(os.stat(name).st_gid).gr_name)
+
+        if(Maxlink<=int(filelinkl)):
+            Maxlink=int(filelinkl)
+        if(Max<=int(filesizel)):
+            Max=int(filesizel)
+
+        if(Maxuser<=int(userl)):
+            Maxuser=int(userl)
+
+        if(Maxgroup<=int(groupl)):
+            Maxgroup=int(groupl)
+    for name in filename:
+        link="%s"%os.stat(name).st_nlink
+        if(Max<=int(filesizel)):
+            Max=int(filesizel)
         user=pwd.getpwuid(os.stat(name).st_uid).pw_name
         group=grp.getgrgid(os.stat(name).st_gid).gr_name
         mon=time.localtime(os.stat(name).st_mtime).tm_mon
-        time1=time.ctime(os.stat(name).st_mtime)[7:-8]
-        filesize.append(os.stat(name).st_size)
+        time1=time.ctime(os.stat(name).st_mtime)[8:-8]
+        filesize.append("%s"%os.stat(name).st_size)
         fileown=oct(os.stat(name).st_mode)[-3:]
         if(os.path.isfile(name)):
             fileowner.append('-')
-        elif(os.path.isdir(name)):
-            fileowner.append('d')
         elif(os.path.islink(name)):
             fileowner.append('l')
+            filesize[i]="7"
+        elif(os.path.isdir(name)):
+            fileowner.append('d')
         elif(group=='disk'):
             fileowner.append('b')
         else:
@@ -52,7 +79,7 @@ def lsl(a):
         for j in range(3):
             str1=strtran(fileown[j])
             fileowner[i] += str1
-        print("%s %s %s %s %6s %2d月 %s %s"%(fileowner[i],link,user,group,filesize[i],mon,time1,name))
+        print(fileowner[i],link.rjust(Maxlink),user.ljust(Maxuser),group.ljust(Maxgroup),filesize[i].rjust(Max),"%2s月"%(mon),time1,name)
         i=i+1
 def lsa(a):
     import glob
