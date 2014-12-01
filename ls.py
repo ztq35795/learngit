@@ -10,5 +10,5 @@ for name in Dir:
         func.lsR(args.isAll(),args.isLong())
     elif(args.isLong()==True):
         func.lsl(args.isAll())
-    elif(args.isAll()==False):
+    else:
         func.lsa(args.isAll())
