@@ -29,9 +29,9 @@ def lsR(All,Long,j=0):
     os.chdir("..")
     return
 
-def strtran(inputstr):
+def TransOwnFromNumToStr(ownnum):
     stra=''
-    a=bin(int(inputstr))[-3:]
+    a=bin(int(ownnum))[-3:]
     if a[0] =='1':
         stra+='r'
     else:
@@ -46,7 +46,7 @@ def strtran(inputstr):
         stra+='-'
     return stra
 
-class GetMaxInfo:
+class GetFormInfo:
     def __init__(self,filename):
         self.Maxsizelen=len("%s"%os.stat(filename[0]).st_size)
         self.Maxlinklen=len("%s"%os.stat(filename[0]).st_nlink)
@@ -85,28 +85,65 @@ class GetMaxInfo:
     def Maxgroup(self):
         return self.Maxgrouplen
 
+class FileState:
+    def __init__(self,name):
+        self.link="%s"%os.stat(name).st_nlink
+        self.user=pwd.getpwuid(os.stat(name).st_uid).pw_name
+        self.group=grp.getgrgid(os.stat(name).st_gid).gr_name
+        self.mon=time.localtime(os.stat(name).st_mtime).tm_mon
+        self.time1=time.ctime(os.stat(name).st_mtime)[8:-8]
+        self.filesize="%s"%os.stat(name).st_size
+        self.fileown=oct(os.stat(name).st_mode)[-3:]
+
+    def Link(self):
+        return self.link
+
+    def User(self):
+        return self.user
+
+    def Group(self):
+        return self.group
+
+    def Mon(self):
+        return self.mon
+
+    def Time(self):
+        return self.time1
+
+    def Filesize(self):
+        return self.filesize
+
+    def Fileown(self):
+        i=0
+        fileowner=[]
+        for ownnum in self.fileown:
+            str1=TransOwnFromNumToStr(ownnum)
+            fileowner += str1
+        return fileowner
+
 def lsl(All):
     filename=JudgeIsAllAndReturnFilename(All)
-    forminfo=GetMaxInfo(filename)
+    forminfo=GetFormInfo(filename)
+
     Maxgrouplen=forminfo.Maxgroup()
     Maxuserlen=forminfo.Maxuser()
     Maxsizelen=forminfo.Maxsize()
     Maxlinklen=forminfo.Maxlink()
-    filesize=[]
-    fileowner=[]
     i=0
 #    dirsize=os.stat(".").st_size/1000
 #    print("总用量 %d"%dirsize)
 
 
     for name in filename:
-        link="%s"%os.stat(name).st_nlink
-        user=pwd.getpwuid(os.stat(name).st_uid).pw_name
-        group=grp.getgrgid(os.stat(name).st_gid).gr_name
-        mon=time.localtime(os.stat(name).st_mtime).tm_mon
-        time1=time.ctime(os.stat(name).st_mtime)[8:-8]
-        filesize.append("%s"%os.stat(name).st_size)
-        fileown=oct(os.stat(name).st_mode)[-3:]
+        FileInfo=FileState(name)
+        fileowner=[]
+        link=FileInfo.Link()
+        user=FileInfo.User()
+        group=FileInfo.Group()
+        filesize=FileInfo.Filesize()
+        mon=FileInfo.Mon()
+        time1=FileInfo.Time()
+
         if(os.path.isfile(name)):
             fileowner.append('-')
         elif(os.path.islink(name)):
@@ -118,11 +155,11 @@ def lsl(All):
             fileowner.append('b')
         else:
             fileowner.append('c')
-        for j in range(3):
-            str1=strtran(fileown[j])
-            fileowner[i] += str1
-        print(fileowner[i],link.rjust(Maxlinklen),user.ljust(Maxuserlen),group.ljust(Maxgrouplen),filesize[i].rjust(Maxsizelen),"%2s月"%(mon),time1,name)
-        i=i+1
+
+        fileowner=fileowner+FileInfo.Fileown()
+
+        print(fileowner,link.rjust(Maxlinklen),user.ljust(Maxuserlen),group.ljust(Maxgrouplen),filesize.rjust(Maxsizelen),"%2s月"%(mon),time1,name)
+
 
 
 def lsa(All):
