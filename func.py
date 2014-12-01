@@ -1,7 +1,16 @@
 #!/usr/bin/python
+import glob,os,pwd,grp,time,argparse
+
+def GetCommendAndFile():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("-a","--all",action="store_true",help="do not ignore entries starting with .")
+    parser.add_argument("-l","--long",action="store_true",help="use a long listing format")
+    parser.add_argument('-R','--recursive',action='store_true',help='list subdirectories recursively')
+    parser.add_argument('files',metavar='File',default='.',nargs='*',help='The files about which the information will be listed')
+    args=parser.parse_args()
+    return args
+
 def lsR(a,l,j=0):
-    import glob
-    import os
     if(a):
         filename=glob.glob("*")+glob.glob(".*")
     else:
@@ -24,7 +33,6 @@ def lsR(a,l,j=0):
             lsR(a,l,1)
     os.chdir("..")
     return
-
 def strtran(inputstr):
     stra=''
     a=bin(int(inputstr))[-3:]
@@ -41,13 +49,7 @@ def strtran(inputstr):
     else:
         stra+='-'
     return stra
-
 def lsl(a):
-    import os
-    import pwd
-    import grp
-    import time
-    import glob
     if(a==0):
         filename=glob.glob("*")
     else:
@@ -108,7 +110,6 @@ def lsl(a):
         print(fileowner[i],link.rjust(Maxlink),user.ljust(Maxuser),group.ljust(Maxgroup),filesize[i].rjust(Max),"%2s月"%(mon),time1,name)
         i=i+1
 def lsa(a):
-    import glob
     if(a==1):
         filename=glob.glob(".*")+glob.glob("*")
     else:
@@ -116,3 +117,21 @@ def lsa(a):
     for name in filename:
         print("%s "%(name),end=' ')
     print()
+
+class GetArg():
+    """Get commend and address
+then return them"""
+    def __init__(self):
+        self.args=GetCommendAndFile()
+
+    def getfileaddress(self):
+        return self.args.files
+
+    def isAll(self):
+        return self.args.all
+
+    def isLong(self):
+        return self.args.long
+
+    def isRecursive(self):
+        return self.args.recursive
